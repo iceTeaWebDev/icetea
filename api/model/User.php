@@ -19,8 +19,9 @@ class User {
         $user_query = "SELECT * FROM user";
         $user_obj = $this->conn->prepare($user_query);
         if($user_obj->execute()) {
-            return true;
+            return $user_obj->fetchAll(PDO::FETCH_ASSOC);
         }
+        return array();
     }
 
     public function create_user() {
@@ -41,6 +42,7 @@ class User {
 
     public function update_user() {
         $user_query = "UPDATE user SET username=:username, email=:email, tel=:tel, address=:address, password=:password WHERE user_id=:user_id";
+
         $user_obj = $this->conn->prepare($user_query);
 
         $user_obj->bindValue(':username', $this->username, PDO::PARAM_STR);
@@ -58,7 +60,7 @@ class User {
     public function delete_user() {
         $user_query = "DELETE FROM user WHERE user_id=:user_id";
         $user_obj = $this->conn->prepare($user_query);
-        $user_obj->bindValue(':user_id', $this->user_id, PDO::PARAM_STR);
+        $user_obj->bindValue(':user_id', $this->user_id, PDO::PARAM_STR);   
         if($user_obj->execute()) {
             return true;
         }
