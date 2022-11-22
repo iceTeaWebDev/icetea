@@ -21,12 +21,12 @@ class Room_date {
         return array();
     }
 
-    public function get_one_room_date() {
-        $user_query = "SELECT * FROM room_date WHERE room_date_id=:room_date_id";
+    public function get_room_date_by_room() {
+        $user_query = "SELECT * FROM room_date WHERE room_id=:room_id";
         $user_obj = $this->conn->prepare($user_query);
-        $user_obj->bindValue(':room_date_id', $this->room_date_id, PDO::PARAM_STR);
+        $user_obj->bindValue(':room_id', $this->room_id, PDO::PARAM_STR);
         if($user_obj->execute()) {
-            return $user_obj->fetch(PDO::FETCH_ASSOC);
+            return $user_obj->fetchAll(PDO::FETCH_ASSOC);
         }
         return array();
     }

@@ -8,7 +8,6 @@ class Hotel {
     public $hotel_rate;
     public $hotel_address;
     public $hotel_image;
-    public $hotel_service;
     public $hotel_description;
 
     public function __construct($db) {
@@ -24,8 +23,18 @@ class Hotel {
         return array();
     }
 
+    public function get_one_hotel() {
+        $user_query = "SELECT * FROM hotel WHERE hotel_id=:hotel_id";
+        $user_obj = $this->conn->prepare($user_query);
+        $user_obj->bindValue(':hotel_id', $this->hotel_id, PDO::PARAM_STR);
+        if($user_obj->execute()) {
+            return $user_obj->fetch(PDO::FETCH_ASSOC);
+        }
+        return array();
+    }
+
     public function create_hotel() {
-        $user_query = "INSERT INTO hotel (hotel_name, hotel_rate, hotel_address, hotel_image, hotel_service) VALUES (:hotel_name, :hotel_rate, :hotel_address, :hotel_image, :hotel_service)";
+        $user_query = "INSERT INTO hotel (hotel_name, hotel_rate, hotel_address, hotel_image, hotel_description) VALUES (:hotel_name, :hotel_rate, :hotel_address, :hotel_image, :hotel_description)";
 
         $user_obj = $this->conn->prepare($user_query);
 
@@ -33,7 +42,8 @@ class Hotel {
         $user_obj->bindValue(':hotel_rate', $this->hotel_rate, PDO::PARAM_STR);
         $user_obj->bindValue(':hotel_address', $this->hotel_address, PDO::PARAM_STR);
         $user_obj->bindValue(':hotel_image', $this->hotel_image, PDO::PARAM_STR);
-        $user_obj->bindValue(':hotel_service', $this->hotel_service, PDO::PARAM_STR);
+        $user_obj->bindValue(':hotel_description', $this->hotel_description, PDO::PARAM_STR);
+
         if($user_obj->execute()) {
             return true;
         }
@@ -67,6 +77,15 @@ class Hotel {
             return true;
         }
         return false;
+    }
+
+    public function get_hotel_by_address() {
+        $user_query = "SELECT * FROM hotel WHERE hotel_address LIKE '%".$this->hotel_address."%'";
+        $user_obj = $this->conn->prepare($user_query);
+        if($user_obj->execute()) {
+            return $user_obj->fetchAll(PDO::FETCH_ASSOC);
+        }
+        return array();
     }
 }
 

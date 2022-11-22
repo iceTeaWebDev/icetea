@@ -23,6 +23,16 @@ class Room {
         return array();
     }
 
+    public function get_room_by_hotel() {
+        $user_query = "SELECT * FROM room WHERE room_hotel_id=:room_hotel_id";
+        $user_obj = $this->conn->prepare($user_query);
+        $user_obj->bindValue(':room_hotel_id', $this->room_hotel_id, PDO::PARAM_STR);
+        if($user_obj->execute()) {
+            return $user_obj->fetchAll(PDO::FETCH_ASSOC);
+        }
+        return array();
+    }
+
     public function create_room() {
         $user_query = "INSERT INTO room (room_hotel_id, room_image, room_service, room_price, room_size) VALUES (:room_hotel_id, :room_image, :room_service, :room_price, :room_size)";
 

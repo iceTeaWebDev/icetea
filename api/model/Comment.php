@@ -1,19 +1,20 @@
 <?php
-class Room_date {
+class Comment {
     // define properties
     private $conn;
-    public $room_date_id;
-    public $room_id;
-    public $room_date_start;
-    public $room_date_end;
+    public $comment_id;
+    public $comment_hotel_id;
+    public $comment_data;
+    public $comment_date;
+    public $comment_user_id;
 
     public function __construct($connect)
     {
         $this->conn = $connect;
     }
 
-    public function get_all_room_date() {
-        $user_query = "SELECT * FROM room_date";
+    public function get_all_comment() {
+        $user_query = "SELECT * FROM comment";
         $user_obj = $this->conn->prepare($user_query);
         if($user_obj->execute()) {
             return $user_obj->fetchAll(PDO::FETCH_ASSOC);
